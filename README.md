@@ -2,27 +2,9 @@ MimeMagic is a library to detect the mime type of a file by extension or by cont
 provided by freedesktop.org (see http://freedesktop.org/wiki/Software/shared-mime-info/).
 
 [![Gem Version](https://img.shields.io/gem/v/mimemagic.svg)](http://rubygems.org/gems/mimemagic)
-
-Dependencies
-============
-
-You will require a copy of the Freedesktop.org shared-mime-info database to be available. If you're on Linux,
-it's probably available via your package manager, and will probably be in the location it's being looked for
-when the gem is installed.
-
-macOS users can install the database via Homebrew with `brew install shared-mime-info`.
-
-Should you be unable to use a package manager you can obtain a copy of the needed file by extracting it from
-the Debian package. This process will also work on a Windows machine.
-
-1. Download the package from https://packages.debian.org/sid/amd64/shared-mime-info/download
-2. Ensure the command line version of 7-Zip is installed
-3. `7z x -so shared-mime-info_2.0-1_amd64.deb data.tar | 7z e -sidata.tar "./usr/share/mime/packages/freedesktop.org.xml"`
-
-
-Place the file `freedesktop.org.xml` in an appropriate location, and then set the environment variable
-`FREEDESKTOP_MIME_TYPES_PATH` to that path. Once that has been done the gem should install successfully. Please
-note that the gem will depend upon the file remaining in that location at run time.
+[![Gem Downloads](https://img.shields.io/gem/dt/mimemagic.svg)](http://rubygems.org/gems/mimemagic)
+[![Build Status](https://secure.travis-ci.org/minad/mimemagic.svg?branch=master)](http://travis-ci.org/minad/mimemagic) [![Code Climate](https://codeclimate.com/github/minad/mimemagic.svg)](https://codeclimate.com/github/minad/mimemagic)
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=min4d&url=https://github.com/minad/mimemagic&title=MimeMagic&language=&tags=github&category=software)
 
 Usage
 =====
@@ -36,12 +18,23 @@ MimeMagic.by_magic(File.open('test.html'))
 # etc...
 ```
 
-You can add your own magic with `MimeMagic.add`.
+Extra magic overlay
+=====
+
+Microsoft Office 2007+ formats (xlsx, docx, and pptx) are not supported by the mime database at freedesktop.org. These files are all zipped collections of xml files and will be detected as "application/zip". Mimemagic comes with extra magic you can overlay on top of the defaults to correctly detect these file types. Enable it like this:
+
+```ruby
+require 'mimemagic'
+require 'mimemagic/overlay'
+MimeMagic.by_magic(File.open('test.xlsx'))
+```
+
+You can add your own magic with `MimeMagic.add`. See `lib/mimemagic/overlay.rb`.
 
 API
 ===
 
-http://www.rubydoc.info/github/mimemagicrb/mimemagic
+http://www.rubydoc.info/github/minad/mimemagic
 
 Tests
 =====
@@ -55,11 +48,4 @@ rake test
 Authors
 =======
 
-* Daniel Mendler
-* Jon Wood
-* [MimeMagic Contributors](https://github.com/mimemagicrb/mimemagic/graphs/contributors)
-
-LICENSE
-=======
-
-MIT
+Daniel Mendler
